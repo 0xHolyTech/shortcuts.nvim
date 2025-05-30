@@ -1,0 +1,2 @@
+local shortcuts = require('shortcuts')
+
