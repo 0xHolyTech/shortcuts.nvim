@@ -3,10 +3,10 @@ local M = {
 }
 
 function M.get_project_shortcuts(projects)
-    local resp vim.system({'bash', '-c [ ! -e ~/.local/share/nvim/shortcuts/1.json]'})
-    if resp.code ~= 0 then
-        vim.system('touch', '~/.local/share/nvim/shortcuts/1.json')
-    end
+    local resp = vim.system({'bash', '-c [ ! -e ~/.local/share/nvim/shortcuts/1.json]'}):wait()
+    -- if resp.code ~= 0 then
+    --     vim.system({'touch', '~/.local/share/nvim/shortcuts/1.json'}):wait()
+    -- end
     return resp.code
     -- file_exists
     -- create if not
@@ -33,7 +33,7 @@ function M.setup()
     end
 end
 
-print(M.get_current_project())
+print(M.get_project_shortcuts("a"))
 
 return M
 
