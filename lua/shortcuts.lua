@@ -4,15 +4,11 @@ local M = {
     shortcuts = {}
 }
 
-function M.read_file(file)
-end
-
 function M.get_project_shortcuts(projects)
     -- create if not
-    vim.fn.system('mkdir -p ~/.local/share/nvim/shortcuts')
-    vim.fn.system('touch ~/.local/share/nvim/shortcuts/1.json ]')
+    f_manager.touch('1.json')
     -- file_valid_json or empty file
-    f_manager.read_file('~/.local/share/nvim/shortcuts/1.json')
+    f_manager.read_file('1.json')
     if f_manager.is_empty() then
         f_manager.fill_template()
     elseif f_manager.invalid_json() then
