@@ -1,4 +1,4 @@
-local f_manager = require('shortcuts.file_utils')
+local f_manager = require('shortcuts.utils.files')
 
 local M = {
     shortcuts = {}
@@ -6,12 +6,12 @@ local M = {
 
 function M.get_project_shortcuts(projects)
     -- create if not
-    f_manager.touch('1.json')
+    local file = '1.json'
+    f_manager.touch(file)
     -- file_valid_json or empty file
-    f_manager.read_file('1.json')
-    if f_manager.is_empty() then
-        f_manager.fill_template()
-    elseif f_manager.invalid_json() then
+    if f_manager.is_empty(file) then
+        -- f_manager.fill_template(file)
+    elseif f_manager.invalid_json(file) then
         vim.api.nvim_err_writeln('ERRORED')
     end
     -- read_file
