@@ -48,5 +48,10 @@ function FileManager.is_invalid_json(fn)
     )
 end
 
+function FileManager.get_json(fn)
+    local content = FileManager.read_file(fn)
+    return json.decode(content)
+end
+
 return FileManager
 

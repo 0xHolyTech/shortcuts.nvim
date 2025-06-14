@@ -16,7 +16,7 @@ function M.get_project_shortcuts(projects)
         vim.api.nvim_err_writeln('ERRORED')
     end
     -- read_file
-    return f_manager.read_file(fn)
+    return f_manager.get_json(fn)
 end
 
 function M.get_current_project()
@@ -40,6 +40,7 @@ function M.setup()
 end
 
 print(M.get_project_shortcuts("a"))
+print(vim.inspect(M.get_project_shortcuts("a")))
 
 return M
 
