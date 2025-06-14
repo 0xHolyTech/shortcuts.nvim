@@ -38,7 +38,7 @@ end
 
 function FileManager.is_invalid_json(fn)
     local content = FileManager.read_file(fn)
-    return xpcall(
+    return not xpcall(
         function()
             json.decode(content)
         end,
@@ -49,3 +49,4 @@ function FileManager.is_invalid_json(fn)
 end
 
 return FileManager
+
