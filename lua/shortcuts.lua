@@ -6,16 +6,17 @@ local M = {
 
 function M.get_project_shortcuts(projects)
     -- create if not
-    local file = '1.json'
-    f_manager.touch(file)
+    local fn = '1.json'
+    f_manager.touch(fn)
     -- file_valid_json or empty file
-    if f_manager.is_empty(file) then
-        f_manager.fill_template(file)
+    if f_manager.is_empty(fn) then
+        f_manager.fill_template(fn)
     end
-    if f_manager.is_invalid_json(file) then
+    if f_manager.is_invalid_json(fn) then
         vim.api.nvim_err_writeln('ERRORED')
     end
     -- read_file
+    return f_manager.read_file(fn)
 end
 
 function M.get_current_project()
