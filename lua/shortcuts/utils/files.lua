@@ -38,9 +38,14 @@ end
 
 function FileManager.is_invalid_json(fn)
     local content = FileManager.read_file(fn)
-    local should_be_json = xpcall(json.decode(content), function(err) print(err); return false end )
-    print(should_be_json)
-    return true
+    return xpcall(
+        function()
+            json.decode(content)
+        end,
+        function(err)
+            vim.api.nvim_err_writeln('File ' .. plugin_path .. fn .. 'is invalid: ' .. err)
+        end
+    )
 end
 
 return FileManager
