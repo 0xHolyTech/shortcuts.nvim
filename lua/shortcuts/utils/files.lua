@@ -32,8 +32,8 @@ function FileManager.is_empty(fn)
     return content == ''
 end
 
-function FileManager.fill_template(fn)
-    FileManager.write_file(fn, '{}')
+function FileManager.fill_template(fn, content)
+    FileManager.write_file(fn, json.encode(content))
 end
 
 function FileManager.is_invalid_json(fn)
