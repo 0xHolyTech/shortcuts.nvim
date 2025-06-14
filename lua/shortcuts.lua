@@ -10,8 +10,9 @@ function M.get_project_shortcuts(projects)
     f_manager.touch(file)
     -- file_valid_json or empty file
     if f_manager.is_empty(file) then
-        -- f_manager.fill_template(file)
-    elseif f_manager.invalid_json(file) then
+        f_manager.fill_template(file)
+    end
+    if f_manager.is_invalid_json(file) then
         vim.api.nvim_err_writeln('ERRORED')
     end
     -- read_file
