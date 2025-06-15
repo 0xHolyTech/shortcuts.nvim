@@ -1,8 +1,27 @@
 local f_manager = require('shortcuts.utils.files')
 
 local M = {
-    shortcuts = {}
+    shortcuts = {
+        n = {
+            keybind = 'p',
+            command = function() vim.api.nvim_err_writeln('WORKS') end,
+        }
+    },
+    prefix = '<leader>a'
 }
+
+function M.is_invalid_shortcut(mode, shortcut)
+    if shortcut == nil then
+        return true
+    end
+    if type(shortcut.command) ~= 'function' then
+        return true
+    end
+    if type(shortcut.keybind) ~= 'string' then
+        return true
+    end
+    return false
+end
 
 function M.get_project_shortcuts(project)
     -- create if not
@@ -13,7 +32,7 @@ function M.get_project_shortcuts(project)
         f_manager.fill_template(fn, M.shortcuts)
     end
     if f_manager.is_invalid_json(fn) then
-        vim.api.nvim_err_writeln('ERRORED')
+        return M.shortcuts
     end
     -- read_file
     return f_manager.get_json(fn)
@@ -30,19 +49,23 @@ function M.get_current_project()
     return string.gsub(cwd, '/', '.')
 end
 
-function M.add_shortcut(shortcut)
+function M.add_shortcut(mode, shortcut)
+    if M.is_invalid_shortcut(mode, shortcut) then
+        vim.api.nvim_err_writeln('INVALID SHORTCUT: ' .. vim.inspect(shortcut))
+    end
+    print(vim.inspect(shortcut))
+    vim.keymap.set(mode, M.prefix .. shortcut.keybind, function() vim.api.nvim_err_writeln('WORKS') end)
 end
 
 function M.setup()
     local project = M.get_current_project()
     M.shortcuts = M.get_project_shortcuts(project)
-    print(type(M.shortcuts))
-    print(vim.inspect(M.shortcuts))
-    for shortcut in M.shortcuts do
-        M.add_shortcut(shortcut)
+    for mode, shortcut in pairs(M.shortcuts) do
+        M.add_shortcut(mode, shortcut)
     end
 end
 
+-- vim.keymap.set('n', '<leader>ap', function() vim.api.nvim_err_writeln('WORKS') end)
 M.setup()
 
 return M
