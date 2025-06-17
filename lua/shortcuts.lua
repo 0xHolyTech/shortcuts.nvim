@@ -4,7 +4,7 @@ local M = {
     shortcuts = {
         n = {
             keybind = 'p',
-            command = 'echo WORKS',
+            command = 'echo "WORKS"',
         }
     },
     prefix = '<leader>a'
@@ -50,8 +50,7 @@ function M.add_shortcut(mode, shortcut)
     if M.is_invalid_shortcut(mode, shortcut) then
         vim.api.nvim_err_writeln('INVALID SHORTCUT: ' .. vim.inspect(shortcut))
     end
-    print(vim.inspect(shortcut))
-    vim.keymap.set(mode, M.prefix .. shortcut.keybind, function() vim.api.nvim_err_writeln('WORKS') end)
+    vim.keymap.set(mode, M.prefix .. shortcut.keybind, '<Cmd>' .. shortcut.command .. '<CR>')
 end
 
 function M.setup()
@@ -62,7 +61,6 @@ function M.setup()
     end
 end
 
--- vim.keymap.set('n', '<leader>ap', function() vim.api.nvim_err_writeln('WORKS') end)
 M.setup()
 
 return M
