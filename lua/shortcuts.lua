@@ -4,7 +4,7 @@ local M = {
     shortcuts = {
         n = {
             keybind = 'p',
-            command = function() vim.api.nvim_err_writeln('WORKS') end,
+            command = 'echo WORKS',
         }
     },
     prefix = '<leader>a'
@@ -12,9 +12,6 @@ local M = {
 
 function M.is_invalid_shortcut(mode, shortcut)
     if shortcut == nil then
-        return true
-    end
-    if type(shortcut.command) ~= 'function' then
         return true
     end
     if type(shortcut.keybind) ~= 'string' then
