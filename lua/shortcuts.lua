@@ -13,6 +13,10 @@ local M = {
 }
 
 function M.is_invalid_shortcut(mode, keybind, shortcut)
+    local exists = vim.cmd('silent ' .. mode .. 'map ' .. M.prefix .. keybind)
+    if exists ~= '' then
+        return true
+    end
     if shortcut == nil then
         return true
     end
