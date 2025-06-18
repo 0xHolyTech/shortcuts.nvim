@@ -1,4 +1,5 @@
 local f_manager = require('shortcuts.utils.files')
+local ui = require('shortcuts.ui')
 
 local M = {
     shortcuts = {
@@ -60,6 +61,10 @@ function M.add_shortcut(mode, keybind, shortcut)
     end
 end
 
+function M.show_ui()
+    ui.ShowMenu({}, nil)
+end
+
 function M.setup()
     local project = M.get_current_project()
     M.shortcuts = M.get_project_shortcuts(project)
@@ -71,6 +76,7 @@ function M.setup()
 end
 
 M.setup()
+M.show_ui()
 
 return M
 
