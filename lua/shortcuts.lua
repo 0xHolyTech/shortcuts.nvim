@@ -65,6 +65,10 @@ function M.show_ui()
     ui.ShowMenu({}, nil)
 end
 
+function M.hide_ui()
+    ui.HideMenu()
+end
+
 function M.setup()
     local project = M.get_current_project()
     M.shortcuts = M.get_project_shortcuts(project)
@@ -76,7 +80,7 @@ function M.setup()
 end
 
 M.setup()
-M.show_ui()
+-- M.show_ui()
 
 return M
 
