@@ -3,13 +3,12 @@ local popup = require("plenary.popup")
 M = {
     height = 20,
     width = 50,
-    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    bufnr = vim.api.nvim_create_buf(false, true),
 }
 
-local Win_id
-
-function M.ShowMenu(opts, cb)
-  Win_id = popup.create(opts, {
+function M.ShowMenu()
+    M.Win_id = popup.create(M.bufnr, {
         title = "MyProjects",
         highlight = "MyProjectWindow",
         line = math.floor(((vim.o.lines - M.height) / 2) - 1),
@@ -18,13 +17,12 @@ function M.ShowMenu(opts, cb)
         minheight = M.height,
         borderchars = M.borderchars,
         -- callback = cb,
-  })
-  local bufnr = vim.api.nvim_win_get_buf(Win_id)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua require('shortcuts').hide_ui()<CR>", { silent=false })
+    })
+    vim.api.nvim_buf_set_keymap(M.bufnr, "n", "q", "<cmd>lua require('shortcuts').hide_ui()<CR>", { silent=false })
 end
 
 function M.HideMenu()
-    vim.api.nvim_win_close(Win_id, true)
+    vim.api.nvim_win_hide(M.Win_id)
 end
 
 return M

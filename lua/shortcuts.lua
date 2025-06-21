@@ -62,7 +62,7 @@ function M.add_shortcut(mode, keybind, shortcut)
 end
 
 function M.show_ui()
-    ui.ShowMenu({}, nil)
+    ui.ShowMenu()
 end
 
 function M.hide_ui()
