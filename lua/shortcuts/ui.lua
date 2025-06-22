@@ -7,6 +7,23 @@ M = {
     bufnr = vim.api.nvim_create_buf(false, true),
 }
 
+function M.setup()
+    vim.api.nvim_create_autocmd('BufLeave', {
+        buffer = M.bufnr,
+        callback = function()
+            -- This should save to file
+            print('YAYAYAYA')
+        end
+    })
+    vim.api.nvim_create_autocmd('BufEnter', {
+        buffer = M.bufnr,
+        callback = function()
+            -- This should load from file
+            print('BABABABA')
+        end
+    })
+end
+
 function M.ShowMenu()
     M.Win_id = popup.create(M.bufnr, {
         title = "MyProjects",
@@ -24,5 +41,7 @@ end
 function M.HideMenu()
     vim.api.nvim_win_hide(M.Win_id)
 end
+
+M.setup()
 
 return M
