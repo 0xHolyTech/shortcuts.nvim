@@ -13,17 +13,17 @@ function M.setup(project)
     vim.api.nvim_create_autocmd('BufLeave', {
         buffer = M.bufnr,
         callback = function()
-            -- This should save to file
-            -- :write M.project
+            vim.cmd(':silent write! ' .. M.project)
         end
     })
     vim.api.nvim_create_autocmd('BufEnter', {
         buffer = M.bufnr,
+        once = true,
         callback = function()
-            -- This should load from file
-            -- :edit M.project
+            vim.cmd(':silent read ' .. M.project)
         end
     })
+    -- vim.api.nvim_buf_set_lines(M.bufnr, 0, -1, false, vim.cmd(':read ' .. M.project))
 end
 
 function M.ShowMenu()
@@ -43,5 +43,7 @@ end
 function M.HideMenu()
     vim.api.nvim_win_hide(M.Win_id)
 end
+
+M.setup('projectname')
 
 return M
