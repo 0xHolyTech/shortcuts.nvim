@@ -20,7 +20,8 @@ function M.setup(project)
         buffer = M.bufnr,
         once = true,
         callback = function()
-            vim.cmd(':silent read ' .. M.project)
+            vim.cmd(':silent 0read ' .. M.project)
+            vim.cmd(':$delete 1')
         end
     })
     -- vim.api.nvim_buf_set_lines(M.bufnr, 0, -1, false, vim.cmd(':read ' .. M.project))
