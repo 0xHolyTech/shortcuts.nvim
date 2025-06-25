@@ -45,6 +45,5 @@ function M.HideMenu()
     vim.api.nvim_win_hide(M.Win_id)
 end
 
-M.setup('projectname')
 
 return M

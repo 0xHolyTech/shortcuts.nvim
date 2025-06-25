@@ -10,6 +10,7 @@ local M = {
             },
         }
     },
+    plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/'),
     prefix = '<leader>a'
 }
 
@@ -71,6 +72,8 @@ end
 
 function M.setup()
     local project = M.get_current_project()
+    f_manager.setup(M.plugin_path)
+    ui.setup(M.plugin_path .. project .. '.json')
     M.shortcuts = M.get_project_shortcuts(project)
     for mode, shortcut in pairs(M.shortcuts) do
         for keybind, command in pairs(shortcut) do

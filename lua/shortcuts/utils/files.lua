@@ -1,24 +1,28 @@
 local json = require('shortcuts.utils.json')
 
-local FileManager = {}
+local FileManager = {
+    plugin_path = ''
+}
 
-local plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/')
+function FileManager.setup(path)
+    FileManager.plugin_path = path
+end
 
 function FileManager.touch(fn)
-    vim.fn.system('mkdir -p ' .. plugin_path)
-    vim.fn.system('touch '.. plugin_path .. fn)
+    vim.fn.system('mkdir -p ' .. FileManager.plugin_path)
+    vim.fn.system('touch '.. FileManager.plugin_path .. fn)
 end
 
 function FileManager.read_file(fn)
     local lines = ''
-    for line in io.lines(plugin_path .. fn) do
+    for line in io.lines(FileManager.plugin_path .. fn) do
       lines = lines .. '\n' .. line
     end
     return lines
 end
 
 function FileManager.write_file(fn, content)
-    local file = io.open(plugin_path .. fn, 'w+')
+    local file = io.open(FileManager.plugin_path .. fn, 'w+')
     if file ~= nil then
         file:write(content)
         file:close()
@@ -43,7 +47,7 @@ function FileManager.is_invalid_json(fn)
             json.decode(content)
         end,
         function(err)
-            vim.api.nvim_err_writeln('File ' .. plugin_path .. fn .. 'is invalid: ' .. err)
+            vim.api.nvim_err_writeln('File ' .. FileManager.plugin_path .. fn .. 'is invalid: ' .. err)
         end
     )
 end
