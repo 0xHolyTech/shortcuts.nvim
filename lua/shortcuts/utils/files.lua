@@ -38,6 +38,7 @@ end
 
 function FileManager.fill_template(fn, content)
     FileManager.write_file(fn, json.encode(content))
+    FileManager.format_json(fn)
 end
 
 function FileManager.is_invalid_json(fn)
@@ -52,10 +53,10 @@ function FileManager.is_invalid_json(fn)
     )
 end
 
-function M.format_json(fn)
+function FileManager.format_json(fn)
     local full_fn = FileManager.plugin_path .. fn
-    vim.fn.system('jq . ' .. full_fn ' > ' .. full_fn .. '.temp')
-    vim.fn.system('jq . ' .. full_fn '.temp > ' .. full_fn)
+    vim.fn.system('jq . ' .. full_fn .. ' > ' .. full_fn .. '.temp')
+    vim.fn.system('jq . ' .. full_fn .. '.temp > ' .. full_fn)
     vim.fn.system('rm ' .. full_fn .. '.temp')
 end
 
