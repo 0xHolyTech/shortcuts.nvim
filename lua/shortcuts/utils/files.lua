@@ -27,7 +27,7 @@ function FileManager.write_file(fn, content)
         file:write(content)
         file:close()
     else
-        vim.api.nvim_err_writeln('WHAAAT')
+        vim.api.nvim_err_writeln('Unable to write to file')
     end
 end
 
@@ -50,6 +50,13 @@ function FileManager.is_invalid_json(fn)
             vim.api.nvim_err_writeln('File ' .. FileManager.plugin_path .. fn .. 'is invalid: ' .. err)
         end
     )
+end
+
+function M.format_json(fn)
+    local full_fn = FileManager.plugin_path .. fn
+    vim.fn.system('jq . ' .. full_fn ' > ' .. full_fn .. '.temp')
+    vim.fn.system('jq . ' .. full_fn '.temp > ' .. full_fn)
+    vim.fn.system('rm ' .. full_fn .. '.temp')
 end
 
 function FileManager.get_json(fn)
