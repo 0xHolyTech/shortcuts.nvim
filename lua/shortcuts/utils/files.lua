@@ -13,6 +13,10 @@ function FileManager.touch(fn)
     vim.fn.system('touch '.. FileManager.plugin_path .. fn)
 end
 
+function FileManager.delete(fn)
+    vim.fn.system('rm ' .. FileManager.plugin_path .. fn)
+end
+
 function FileManager.read_file(fn)
     local lines = ''
     for line in io.lines(FileManager.plugin_path .. fn) do
@@ -57,7 +61,7 @@ function FileManager.format_json(fn)
     local full_fn = FileManager.plugin_path .. fn
     vim.fn.system('jq . ' .. full_fn .. ' > ' .. full_fn .. '.temp')
     vim.fn.system('jq . ' .. full_fn .. '.temp > ' .. full_fn)
-    vim.fn.system('rm ' .. full_fn .. '.temp')
+    FileManager.delete(fn)
 end
 
 function FileManager.get_json(fn)
