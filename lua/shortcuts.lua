@@ -2,7 +2,7 @@ local f_manager = require('shortcuts.utils.files')
 local ui = require('shortcuts.ui')
 
 local M = {
-    shortcuts = {
+    default_shortcuts = {
         n = {
             p = {
                 command = 'echo "Example bash commands"',
@@ -18,6 +18,7 @@ local M = {
             },
         }
     },
+    shortcuts = {},
     plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/'),
     prefix = '<leader>a'
 }
@@ -40,12 +41,19 @@ function M.get_project_shortcuts(project)
     local fn = project .. '.json'
     f_manager.touch(fn)
     if f_manager.is_empty(fn) then
-        f_manager.fill_template(fn, M.shortcuts)
+        f_manager.fill_template(fn, M.default_shortcuts)
     end
     if f_manager.is_invalid_json(fn) then
-        return M.shortcuts
+        return M.default_shortcuts
     end
     return f_manager.get_json(fn)
+end
+
+function M.reset_project_shortcuts()
+    local project = M.get_current_project()
+    local fn = project .. '.json'
+    f_manager.delete(fn)
+    return M.get_project_shortcuts(project)
 end
 
 function M.get_current_project()
