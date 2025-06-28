@@ -8,6 +8,10 @@ local M = {
                 command = 'echo "WORKS"',
                 is_bash = true,
             },
+            o = {
+                command = 'lua print("hello")',
+                is_bash = false,
+            },
         }
     },
     plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/'),
@@ -58,7 +62,7 @@ function M.add_shortcut(mode, keybind, shortcut)
     if shortcut.is_bash then
         vim.keymap.set(mode, M.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
     else
-        vim.keymap.set(mode, M.prefix .. keybind, shortcut.command)
+        vim.keymap.set(mode, M.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
     end
 end
 
