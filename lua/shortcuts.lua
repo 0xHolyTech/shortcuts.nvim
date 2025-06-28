@@ -5,12 +5,16 @@ local M = {
     shortcuts = {
         n = {
             p = {
-                command = 'echo "WORKS"',
-                is_bash = true,
+                command = 'echo "Example bash commands"',
+                command_type = 'bash',
             },
             o = {
-                command = 'lua print("hello")',
-                is_bash = false,
+                command = 'print("Example lua command")',
+                command_type = 'lua',
+            },
+            i = {
+                command = 'lua print("example vim command")',
+                command_type = 'nvim',
             },
         }
     },
@@ -59,10 +63,15 @@ function M.add_shortcut(mode, keybind, shortcut)
     if M.is_invalid_shortcut(mode, keybind, shortcut) then
         vim.api.nvim_err_writeln('INVALID SHORTCUT: ' .. vim.inspect(shortcut))
     end
-    if shortcut.is_bash then
+    if shortcut.command_type == 'lua' then
+        vim.keymap.set(mode, M.prefix .. keybind, ':lua ' .. shortcut.command .. '<CR>')
+    elseif shortcut.command_type == 'nvim' or shortcut.command_type == 'vim' then
+        vim.keymap.set(mode, M.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
+    elseif shortcut.command_type == 'bash' then
         vim.keymap.set(mode, M.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
     else
-        vim.keymap.set(mode, M.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, M.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
+        vim.api.nvim_err_writeln(shortcut.command_type .. ' is not a valid command type, defaulting to bash')
     end
 end
 
