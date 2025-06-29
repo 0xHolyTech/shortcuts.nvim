@@ -76,7 +76,7 @@ function Shortcuts.add_shortcut(mode, keybind, shortcut)
     elseif shortcut.command_type == 'nvim' or shortcut.command_type == 'vim' then
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
     elseif shortcut.command_type == 'bash' then
-        vim.keymap.set(mode, Shortcuts.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.fn.system("' .. shortcut.command .. '")<CR>')
     else
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
         vim.api.nvim_err_writeln(shortcut.command_type .. ' is not a valid command type, defaulting to bash')
