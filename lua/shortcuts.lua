@@ -103,6 +103,6 @@ function Shortcuts.setup()
     end
 end
 
-vim.api.nvim_create_user_command('ShortcutsToggle', 'lua require"shortcuts".toggle()')
-vim.api.nvim_create_user_command('ShortcutsReset', 'lua require"shortcuts".reset_project_shortcuts()')
+vim.api.nvim_create_user_command('ShortcutsToggle', 'lua require"shortcuts".toggle()', {})
+vim.api.nvim_create_user_command('ShortcutsReset', 'lua require"shortcuts".reset_project_shortcuts()', {})
 
