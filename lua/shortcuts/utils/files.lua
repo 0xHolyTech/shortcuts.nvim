@@ -61,7 +61,7 @@ function FileManager.format_json(fn)
     local full_fn = FileManager.plugin_path .. fn
     vim.fn.system('jq . ' .. full_fn .. ' > ' .. full_fn .. '.temp')
     vim.fn.system('jq . ' .. full_fn .. '.temp > ' .. full_fn)
-    FileManager.delete(fn)
+    FileManager.delete(fn .. '.temp')
 end
 
 function FileManager.get_json(fn)
