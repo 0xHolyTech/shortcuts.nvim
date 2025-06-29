@@ -1,7 +1,7 @@
 local f_manager = require('shortcuts.utils.files')
 local ui = require('shortcuts.ui')
 
-local M = {
+local Shortcuts = {
     default_shortcuts = {
         n = {
             p = {
@@ -23,8 +23,8 @@ local M = {
     prefix = '<leader>a'
 }
 
-function M.is_invalid_shortcut(mode, keybind, shortcut)
-    local exists = vim.cmd('silent ' .. mode .. 'map ' .. M.prefix .. keybind)
+function Shortcuts.is_invalid_shortcut(mode, keybind, shortcut)
+    local exists = vim.cmd('silent ' .. mode .. 'map ' .. Shortcuts.prefix .. keybind)
     if exists ~= '' then
         return true
     end
@@ -37,26 +37,26 @@ function M.is_invalid_shortcut(mode, keybind, shortcut)
     return false
 end
 
-function M.get_project_shortcuts(project)
+function Shortcuts.get_project_shortcuts(project)
     local fn = project .. '.json'
     f_manager.touch(fn)
     if f_manager.is_empty(fn) then
-        f_manager.fill_template(fn, M.default_shortcuts)
+        f_manager.fill_template(fn, Shortcuts.default_shortcuts)
     end
     if f_manager.is_invalid_json(fn) then
-        return M.default_shortcuts
+        return Shortcuts.default_shortcuts
     end
     return f_manager.get_json(fn)
 end
 
-function M.reset_project_shortcuts()
-    local project = M.get_current_project()
+function Shortcuts.reset_project_shortcuts()
+    local project = Shortcuts.get_current_project()
     local fn = project .. '.json'
     f_manager.delete(fn)
-    return M.get_project_shortcuts(project)
+    return Shortcuts.get_project_shortcuts(project)
 end
 
-function M.get_current_project()
+function Shortcuts.get_current_project()
     local cwd = vim.loop.cwd()
     local root = vim.fn.system('git rev-parse --show-toplevel')
     if vim.v.shell_error == 0 and root ~= nil then
@@ -67,41 +67,41 @@ function M.get_current_project()
     return string.gsub(cwd, '/', '.')
 end
 
-function M.add_shortcut(mode, keybind, shortcut)
-    if M.is_invalid_shortcut(mode, keybind, shortcut) then
+function Shortcuts.add_shortcut(mode, keybind, shortcut)
+    if Shortcuts.is_invalid_shortcut(mode, keybind, shortcut) then
         vim.api.nvim_err_writeln('INVALID SHORTCUT: ' .. vim.inspect(shortcut))
     end
     if shortcut.command_type == 'lua' then
-        vim.keymap.set(mode, M.prefix .. keybind, ':lua ' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua ' .. shortcut.command .. '<CR>')
     elseif shortcut.command_type == 'nvim' or shortcut.command_type == 'vim' then
-        vim.keymap.set(mode, M.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
     elseif shortcut.command_type == 'bash' then
-        vim.keymap.set(mode, M.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
     else
-        vim.keymap.set(mode, M.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
         vim.api.nvim_err_writeln(shortcut.command_type .. ' is not a valid command type, defaulting to bash')
     end
 end
 
-function M.show_ui()
+function Shortcuts.show_ui()
     ui.ShowMenu()
 end
 
-function M.hide_ui()
+function Shortcuts.hide_ui()
     ui.HideMenu()
 end
 
-function M.setup()
-    local project = M.get_current_project()
-    f_manager.setup(M.plugin_path)
-    ui.setup(M.plugin_path .. project .. '.json')
-    M.shortcuts = M.get_project_shortcuts(project)
-    for mode, shortcut in pairs(M.shortcuts) do
+function Shortcuts.setup()
+    local project = Shortcuts.get_current_project()
+    f_manager.setup(Shortcuts.plugin_path)
+    ui.setup(Shortcuts.plugin_path .. project .. '.json')
+    Shortcuts.shortcuts = Shortcuts.get_project_shortcuts(project)
+    for mode, shortcut in pairs(Shortcuts.shortcuts) do
         for keybind, command in pairs(shortcut) do
-            M.add_shortcut(mode, keybind, command)
+            Shortcuts.add_shortcut(mode, keybind, command)
         end
     end
 end
 
-return M
+return Shortcuts
 
