@@ -103,8 +103,5 @@ function M.setup()
     end
 end
 
-M.setup()
--- M.show_ui()
-
 return M
 
