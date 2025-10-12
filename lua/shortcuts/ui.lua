@@ -1,49 +1,43 @@
-local popup = require("plenary.popup")
+local Popup = require("nui.popup")
+local Layout = require("nui.layout")
+
+local event = require("nui.utils.autocmd").event
 
 M = {
-    height = 20,
-    width = 50,
-    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    bufnr = vim.api.nvim_create_buf(false, true),
-    project = ''
+    layout_params = {
+        position = "50%",
+        size = {
+            width = 80,
+            height = "60%",
+        },
+    },
+    popup = Popup({ enter = true, border = "single" }),
+    project = '',
 }
+
 
 function M.setup(project)
     M.project = project
-    vim.api.nvim_create_autocmd('BufLeave', {
-        buffer = M.bufnr,
-        callback = function()
-            vim.cmd(':silent write! ' .. M.project)
-        end
-    })
-    vim.api.nvim_create_autocmd('BufEnter', {
-        buffer = M.bufnr,
-        once = true,
-        callback = function()
-            vim.cmd(':silent 0read ' .. M.project)
-            vim.cmd(':$delete 1')
-        end
-    })
-    -- vim.api.nvim_buf_set_lines(M.bufnr, 0, -1, false, vim.cmd(':read ' .. M.project))
+    M.popup:on(event.BufLeave, function()
+        vim.cmd(':silent write! ' .. M.project)
+        M.popup:unmount()
+    end)
+    M.popup:on(event.BufWinEnter, function()
+        vim.cmd(':silent 0read ' .. M.project)
+    end, { once = true })
+    M.layout = Layout(
+        M.layout_params,
+        Layout.Box({
+            Layout.Box( M.popup, { size = "100%" } ),
+        }, { dir = "row" })
+    )
+    M.popup:map("n", "q", function()
+        M.layout:hide()
+    end, {})
 end
 
 function M.ShowMenu()
-    M.Win_id = popup.create(M.bufnr, {
-        title = M.project,
-        highlight = "MyProjectWindow",
-        line = math.floor(((vim.o.lines - M.height) / 2) - 1),
-        col = math.floor((vim.o.columns - M.width) / 2),
-        minwidth = M.width,
-        minheight = M.height,
-        borderchars = M.borderchars,
-        -- callback = cb,
-    })
-    vim.api.nvim_buf_set_keymap(M.bufnr, "n", "q", "<cmd>lua require('shortcuts').hide_ui()<CR>", { silent=false })
+    M.layout:show()
 end
-
-function M.HideMenu()
-    vim.api.nvim_win_hide(M.Win_id)
-end
-
 
 return M
