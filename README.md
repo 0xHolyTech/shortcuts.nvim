@@ -17,4 +17,5 @@ Although the current project is more or less what I needed, it still has quite a
 - [ ] Allow configuring through setup()
 - [ ] Cleaner edit board, parsed from json and then written back to json on save
 - [x] Cleaner ui using Nui.nvim
+- [x] Allow actually good async commands
 
