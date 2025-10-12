@@ -20,6 +20,7 @@ function M.setup(project)
     M.project = project
     M.popup:on(event.BufLeave, function()
         vim.cmd(':silent write! ' .. M.project)
+        vim.cmd(':ShortcutsReset')
         M.popup:unmount()
     end)
     M.popup:on(event.BufWinEnter, function()

@@ -112,8 +112,13 @@ end
 
 function Shortcuts.setup()
     local project = Shortcuts.get_current_project()
-    f_manager.setup(Shortcuts.plugin_path)
     ui.setup(Shortcuts.plugin_path .. project .. '.json')
+    f_manager.setup(Shortcuts.plugin_path)
+    Shortcuts.set_shortcuts()
+end
+
+function Shortcuts.set_shortcuts()
+    local project = Shortcuts.get_current_project()
     Shortcuts.shortcuts = Shortcuts.get_project_shortcuts(project)
     for mode, shortcut in pairs(Shortcuts.shortcuts) do
         for keybind, command in pairs(shortcut) do
@@ -123,7 +128,8 @@ function Shortcuts.setup()
 end
 
 vim.api.nvim_create_user_command('ShortcutsToggle', 'lua require"shortcuts".show_ui()', {})
-vim.api.nvim_create_user_command('ShortcutsReset', 'lua require"shortcuts".reset_project_shortcuts()', {})
+vim.api.nvim_create_user_command('ShortcutsSetDefaults', 'lua require"shortcuts".reset_project_shortcuts()', {})
+vim.api.nvim_create_user_command('ShortcutsReset', 'lua require"shortcuts".set_shortcuts()', {})
 
 return Shortcuts
 
