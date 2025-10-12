@@ -11,7 +11,7 @@ In the end, you can do this for all of your usual project needs. Linting, buildi
 ## Future tasks
 Although the current project is more or less what I needed, it still has quite a few annoying issues. These will be listed below and removed as they are fixed.
 
-- [ ] Overwrite commands after being modified.
+- [x] Overwrite commands after being modified.
 - [ ] Remove commands after being deleted.
 - [ ] Better defaults (probably make file defaults)
 - [ ] Allow configuring through setup()
