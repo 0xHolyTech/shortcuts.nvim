@@ -6,15 +6,25 @@ local Shortcuts = {
         n = {
             p = {
                 command = "echo 'Example bash commands'",
-                command_type = 'bash',
+                command_type = "bash",
             },
             o = {
                 command = "print('Example lua command')",
-                command_type = 'lua',
+                command_type = "lua",
             },
             i = {
                 command = "lua print('example vim command')",
-                command_type = 'nvim',
+                command_type = "nvim",
+            },
+            u = {
+                command = "echo 'hi'; sleep 3; echo 'bye'",
+                command_type = "async",
+                async_type = "run",
+            },
+            y = {
+                command = "echo 'hi'; sleep 3; echo 'bye'",
+                command_type = "async",
+                async_type = "term",
             },
         }
     },
@@ -76,10 +86,19 @@ function Shortcuts.add_shortcut(mode, keybind, shortcut)
     elseif shortcut.command_type == 'nvim' or shortcut.command_type == 'vim' then
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
     elseif shortcut.command_type == 'bash' then
-        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.cmd("' .. shortcut.command .. '")<CR>')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.fn.system("' .. shortcut.command .. '")<CR>')
+    elseif shortcut.command_type == 'async' then
+        if shortcut.async_type == 'run' then
+            vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. '<CR>')
+        elseif shortcut.async_type == 'term' then
+            vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun -mode=term -focus=0 -pos=right -cols=50 -close ' .. shortcut.command .. '<CR>')
+        else
+            vim.api.nvim_err_writeln(shortcut.async_type .. ' is not a valid async type, defaulting to run')
+            vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. '<CR>')
+        end
     else
-        vim.keymap.set(mode, Shortcuts.prefix .. keybind, '<Cmd>' .. shortcut.command .. '<CR>')
-        vim.api.nvim_err_writeln(shortcut.command_type .. ' is not a valid command type, defaulting to bash')
+        vim.api.nvim_err_writeln(shortcut.command_type .. ' is not a valid command type, defaulting to lua')
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua ' .. shortcut.command .. '<CR>')
     end
 end
 
