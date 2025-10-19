@@ -25,6 +25,7 @@ local Shortcuts = {
                 command = "echo 'hi'; sleep 3; echo 'bye'",
                 command_type = "async",
                 async_type = "term",
+                notify = true,
             },
         }
     },
@@ -88,8 +89,12 @@ function Shortcuts.add_shortcut(mode, keybind, shortcut)
     elseif shortcut.command_type == 'bash' then
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.fn.system("' .. shortcut.command .. '")<CR>')
     elseif shortcut.command_type == 'async' then
+        local notify_msg = ""
+        if shortcut.notify then
+            notify_msg = '; notify-send "Async Runner" "Task finished: ' .. shortcut.command .. '" --icon=nvim --app-name="Nvim Alerts"'
+        end
         if shortcut.async_type == 'run' then
-            vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. '<CR>')
+            vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. notify_msg .. '<CR>')
         elseif shortcut.async_type == 'term' then
             vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun -mode=term -focus=0 -pos=right -cols=50 -close ' .. shortcut.command .. '<CR>')
         else
