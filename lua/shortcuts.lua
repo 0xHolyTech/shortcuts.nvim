@@ -27,6 +27,10 @@ local Shortcuts = {
                 async_type = "term",
                 notify = true,
             },
+            t = {
+                command = "ithis is me<ESC>",
+                command_type = "keyinject",
+            },
         }
     },
     shortcuts = {},
@@ -88,6 +92,8 @@ function Shortcuts.add_shortcut(mode, keybind, shortcut)
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':' .. shortcut.command .. '<CR>')
     elseif shortcut.command_type == 'bash' then
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.fn.system("' .. shortcut.command .. '")<CR>')
+    elseif shortcut.command_type == 'keyinject' then
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, shortcut.command)
     elseif shortcut.command_type == 'async' then
         local notify_msg = ""
         if shortcut.notify then
