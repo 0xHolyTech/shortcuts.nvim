@@ -28,7 +28,7 @@ local Shortcuts = {
                 notify = true,
             },
             t = {
-                command = "ithis is me<ESC>",
+                command = "ihello world<ESC>",
                 command_type = "keyinject",
             },
         }
