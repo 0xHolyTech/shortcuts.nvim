@@ -19,3 +19,17 @@ Although the current project is more or less what I needed, it still has quite a
 - [x] Cleaner ui using Nui.nvim
 - [x] Allow actually good async commands
 
+## Installation
+
+### Lazy
+
+```lua
+{
+    '0xHolyTech/shortcuts.nvim',
+    dependencies = {
+        'skywind3000/asyncrun.vim',
+        'MunifTanjim/nui.nvim',
+    },
+},
+```
+
