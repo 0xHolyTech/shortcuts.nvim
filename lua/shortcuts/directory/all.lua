@@ -11,30 +11,23 @@ local M = {}
 
 function M.get_project_languages()
     local languages = {}
-    if go.is_go_directory() then
-        table.insert(languages, 'go')
+    local language_detector_map = {
+        docker = docker.is_docker_directory,
+        go = go.is_go_directory,
+        js = javascript.is_javascript_directory,
+        k8s = kubernetes.is_kubernetes_directory,
+        lua = lua.is_lua_directory,
+        py = python.is_python_directory,
+        rs = rust.is_rust_directory,
+        tf = terraform.is_terraform_directory
+    }
+
+    for lang_name, detector_func in pairs(language_detector_map) do
+        if detector_func() then
+            table.insert(languages, lang_name)
+        end
     end
-    if javascript.is_javascript_directory() then
-        table.insert(languages, 'js')
-    end
-    if lua.is_lua_directory() then
-        table.insert(languages, 'lua')
-    end
-    if python.is_python_directory() then
-        table.insert(languages, 'python')
-    end
-    if rust.is_rust_directory() then
-        table.insert(languages, 'rust')
-    end
-    if docker.is_docker_directory() then
-        table.insert(languages, 'docker')
-    end
-    if kubernetes.is_kubernetes_directory() then
-        table.insert(languages, 'kubernetes')
-    end
-    if terraform.is_terraform_directory() then
-        table.insert(languages, 'terraform')
-    end
+
     return languages
 end
 
