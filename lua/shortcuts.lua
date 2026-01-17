@@ -141,7 +141,7 @@ end
 
 function Shortcuts.print_languages()
     local languages = require("shortcuts.directory.all")
-    print(languages.get_project_languages())
+    print(vim.inspect(languages.get_project_languages()))
 end
 
 vim.api.nvim_create_user_command('ShortcutsToggle', 'lua require"shortcuts".show_ui()', {})

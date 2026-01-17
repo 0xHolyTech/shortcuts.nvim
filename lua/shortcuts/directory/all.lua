@@ -9,19 +9,19 @@ local M = {}
 function M.get_project_languages()
     local languages = {}
     if go.is_go_directory() then
-        languages.insert('go')
+        table.insert(languages, 'go')
     end
     if javascript.is_javascript_directory() then
-        languages.insert('js')
+        table.insert(languages, 'js')
     end
     if lua.is_lua_directory() then
-        languages.insert('lua')
+        table.insert(languages, 'lua')
     end
     if python.is_python_directory() then
-        languages.insert('python')
+        table.insert(languages, 'python')
     end
     if rust.is_rust_directory() then
-        languages.insert('rust')
+        table.insert(languages, 'rust')
     end
     return languages
 end
