@@ -1,4 +1,5 @@
 local f_manager = require('shortcuts.utils.files')
+local directory = require('shortcuts.directory.all')
 local ui = require('shortcuts.ui')
 
 local Shortcuts = {
