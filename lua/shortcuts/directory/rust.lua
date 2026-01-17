@@ -1,8 +1,7 @@
+local directory_utils = require('shortcuts.utils.directory')
 local M = {}
 
 function M.is_rust_directory()
-    local uv = vim.uv or require('vim.uv')
-
     local rust_indicators = {
         "Cargo.toml",
         "Cargo.lock",
@@ -12,17 +11,7 @@ function M.is_rust_directory()
         "src/lib.rs",
     }
 
-    local cwd = uv.cwd()
-    for _, indicator in ipairs(rust_indicators) do
-        local path = cwd .. "/" .. indicator
-        local stat = uv.fs_stat(path)
-
-        if stat then
-            return true
-        end
-    end
-
-    return false
+    return directory_utils.is_directory_with_indicators(rust_indicators)
 end
 
 return M

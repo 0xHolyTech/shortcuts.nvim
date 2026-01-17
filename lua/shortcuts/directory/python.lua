@@ -1,8 +1,7 @@
+local directory_utils = require('shortcuts.utils.directory')
 local M = {}
 
 function M.is_python_directory()
-    local uv = vim.uv or require('vim.uv')
-
     local python_indicators = {
         "pyproject.toml",
         "setup.py",
@@ -18,17 +17,7 @@ function M.is_python_directory()
         "venv",
     }
 
-    local cwd = uv.cwd()
-    for _, indicator in ipairs(python_indicators) do
-        local path = cwd .. "/" .. indicator
-        local stat = uv.fs_stat(path)
-
-        if stat then
-            return true
-        end
-    end
-
-    return false
+    return directory_utils.is_directory_with_indicators(python_indicators)
 end
 
 return M
