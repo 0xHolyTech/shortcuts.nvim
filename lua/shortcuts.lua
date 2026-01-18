@@ -1,10 +1,9 @@
 local f_manager = require('shortcuts.utils.files')
-local directory = require('shortcuts.directory.all')
 local template = require('shortcuts.templates')
 local ui = require('shortcuts.ui')
 
 local Shortcuts = {
-    default_shortcuts = template.generate_defaults(),
+    default_shortcuts = template.generate_defaults(template.defaults),
     shortcuts = {},
     plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/'),
     prefix = '<leader>a'
@@ -101,10 +100,23 @@ function Shortcuts.hide_ui()
     ui.HideMenu()
 end
 
-function Shortcuts.setup()
+function Shortcuts.setup(opts)
     local project = Shortcuts.get_current_project()
     ui.setup(Shortcuts.plugin_path .. project .. '.json')
     f_manager.setup(Shortcuts.plugin_path)
+
+    if opts and opts.defaults then
+        local new_defaults = template.generate_defaults(opts.defaults)
+        if opts.override then
+            Shortcuts.default_shortcuts = new_defaults
+        else
+            Shortcuts.default_shortcuts = vim.tbl_deep_extend(
+                "force",
+                Shortcuts.default_shortcuts,
+                new_defaults
+            )
+        end
+    end
     Shortcuts.set_shortcuts()
 end
 
