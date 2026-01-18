@@ -13,13 +13,13 @@ function M.get_project_languages()
     local languages = {}
     local language_detector_map = {
         docker = docker.is_docker_directory,
-        go = go.is_go_directory,
-        js = javascript.is_javascript_directory,
-        k8s = kubernetes.is_kubernetes_directory,
+        golang = go.is_go_directory,
+        javascript = javascript.is_javascript_directory,
+        kubernetes = kubernetes.is_kubernetes_directory,
         lua = lua.is_lua_directory,
-        py = python.is_python_directory,
-        rs = rust.is_rust_directory,
-        tf = terraform.is_terraform_directory
+        python = python.is_python_directory,
+        rust = rust.is_rust_directory,
+        terraform = terraform.is_terraform_directory
     }
 
     for lang_name, detector_func in pairs(language_detector_map) do

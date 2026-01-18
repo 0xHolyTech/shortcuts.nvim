@@ -1,39 +1,10 @@
 local f_manager = require('shortcuts.utils.files')
 local directory = require('shortcuts.directory.all')
+local template = require('shortcuts.templates')
 local ui = require('shortcuts.ui')
 
 local Shortcuts = {
-    default_shortcuts = {
-        n = {
-            p = {
-                command = "echo 'Example bash commands'",
-                command_type = "bash",
-            },
-            o = {
-                command = "print('Example lua command')",
-                command_type = "lua",
-            },
-            i = {
-                command = "lua print('example vim command')",
-                command_type = "nvim",
-            },
-            u = {
-                command = "echo 'hi'; sleep 3; echo 'bye'",
-                command_type = "async",
-                async_type = "run",
-            },
-            y = {
-                command = "echo 'hi'; sleep 3; echo 'bye'",
-                command_type = "async",
-                async_type = "term",
-                notify = true,
-            },
-            t = {
-                command = "ihello world<ESC>",
-                command_type = "keyinject",
-            },
-        }
-    },
+    default_shortcuts = template.generate_defaults(),
     shortcuts = {},
     plugin_path = vim.fn.expand('$HOME/.local/share/nvim/shortcuts/'),
     prefix = '<leader>a'
