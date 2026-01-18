@@ -66,10 +66,15 @@ function Shortcuts.add_shortcut(mode, keybind, shortcut)
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':lua vim.fn.system("' .. shortcut.command .. '")<CR>')
     elseif shortcut.command_type == 'keyinject' then
         vim.keymap.set(mode, Shortcuts.prefix .. keybind, shortcut.command)
+    elseif shortcut.command_type == 'background' then
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. '<CR>')
+    elseif shortcut.command_type == 'terminal' then
+        vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun -mode=term -focus=0 -pos=right -cols=50 -close ' .. shortcut.command .. '<CR>')
+    -- Backward compatability
     elseif shortcut.command_type == 'async' then
-        local notify_msg = ""
+        local notify_msg = '; notify-send "Warning" "Using async is now deprecated, use terminal or background instead" --icon=nvim --app-name="Nvim Alerts"'
         if shortcut.notify then
-            notify_msg = '; notify-send "Async Runner" "Task finished: ' .. shortcut.command .. '" --icon=nvim --app-name="Nvim Alerts"'
+            notify_msg = '; notify-send "Async Runner" "Task finished: ' .. shortcut.command .. '" --icon=nvim --app-name="Nvim Alerts"' .. notify_msg
         end
         if shortcut.async_type == 'run' then
             vim.keymap.set(mode, Shortcuts.prefix .. keybind, ':AsyncRun ' .. shortcut.command .. notify_msg .. '<CR>')
