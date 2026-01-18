@@ -34,6 +34,8 @@ local defaults = {
             },
         },
     },
+    default = {
+    },
     python = {
         n = {
             l = {
@@ -83,6 +85,10 @@ local defaults = {
 function M.generate_defaults()
     local language_list = directory.get_project_languages()
     local shortcuts = {}
+    if next(language_list) == nil then
+        table.insert(language_list, "empty")
+    end
+    table.insert(language_list, "default")
     for _, lang in pairs(language_list) do
         shortcuts = vim.tbl_deep_extend('keep', shortcuts, defaults[lang])
     end
