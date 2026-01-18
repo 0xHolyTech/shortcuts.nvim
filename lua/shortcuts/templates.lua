@@ -90,7 +90,9 @@ function M.generate_defaults()
     end
     table.insert(language_list, "default")
     for _, lang in pairs(language_list) do
-        shortcuts = vim.tbl_deep_extend('keep', shortcuts, defaults[lang])
+        if defaults[lang] ~= nil then
+            shortcuts = vim.tbl_deep_extend('keep', shortcuts, defaults[lang])
+        end
     end
     return shortcuts
 end
