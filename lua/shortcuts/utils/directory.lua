@@ -1,13 +1,15 @@
 local M = {}
 
-function M.is_directory_with_indicators(indicators)
-    local uv = vim.uv or require('vim.uv')
-    local cwd = uv.cwd()
+local function find_files_single_depth(pattern)
+    local cmd = "find . -maxdepth 1 -name '" .. pattern .. "' -type f"
+    return vim.fn.system(cmd)
+end
 
+function M.is_directory_with_indicators(indicators)
     for _, indicator in ipairs(indicators) do
-        local path = cwd .. "/" .. indicator
-        local stat = uv.fs_stat(path)
-        if stat then
+        local path = indicator
+        local stat = find_files_single_depth(path)
+        if string.len(stat) > 0 then
             return true
         end
     end
