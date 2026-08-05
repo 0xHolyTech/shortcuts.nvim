@@ -5,7 +5,6 @@ function M.is_lua_directory()
     local lua_indicators = {
         "init.lua",
         "main.lua",
-        "src/main.lua",
         "rockspec",
         "lua",
         ".luarc.json",

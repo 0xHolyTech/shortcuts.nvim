@@ -6,9 +6,7 @@ function M.is_rust_directory()
         "Cargo.toml",
         "Cargo.lock",
         "main.rs",
-        "src/main.rs",
         "lib.rs",
-        "src/lib.rs",
     }
 
     return directory_utils.is_directory_with_indicators(rust_indicators)

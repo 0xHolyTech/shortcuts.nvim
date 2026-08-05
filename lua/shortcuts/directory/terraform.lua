@@ -5,7 +5,7 @@ function M.is_terraform_directory()
     local terraform_indicators = {
         "*.tf",
         "*.tfvars",
-        "terraform/",
+        "terraform",
     }
 
     return directory_utils.is_directory_with_indicators(terraform_indicators)

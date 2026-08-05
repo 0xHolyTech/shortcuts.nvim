@@ -6,7 +6,6 @@ function M.is_python_directory()
         "pyproject.toml",
         "setup.py",
         "main.py",
-        "src/main.py",
         "requirements.txt",
         "requirements-dev.txt",
         "Pipfile",
